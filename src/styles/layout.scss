@@ -1,0 +1,136 @@
+.container-app {
+  height: 100%;
+  display: flex;
+}
+
+#toggle-menu {
+  display: none;
+}
+
+#toggle-menu:checked ~ aside {
+  display: none;
+}
+
+aside {
+  height: 100vh;
+  width: 220px;
+  background: #fff;
+  box-shadow: 1px 0 20px rgba(0, 0, 0, 0.08);
+
+  .logo {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+
+    img {
+      height: 90px;
+      width: 90px;
+      border-radius: 45px;
+    }
+
+    a {
+      font-weight: 500;
+      font-size: 12px;
+      color: #8d97ad;
+      margin-top: 10px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e7ebf0;
+      text-transform: uppercase;
+
+      &:hover {
+        color: #01c0c8;
+      }
+    }
+  }
+
+  .menu {
+    font-weight: 500;
+    color: #8d97ad;
+    padding: 0 20px;
+
+    ul {
+
+      li.menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        cursor: pointer;
+
+        a {
+          color: #8d97ad;
+
+          &:hover {
+            color: #fb9678;
+          }
+        }        
+
+        svg {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+
+.container-main {
+  height: 100%;
+  flex: 1;
+  overflow: auto;
+  
+  header {
+    height: 60px;
+    background: #4f5467;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+
+    label {
+      margin-bottom: 0;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+
+      svg {
+        color: #8d97ad;
+        margin-right: 20px;
+        cursor: pointer;
+        font-size: 16px;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+main {
+  .nav-main {
+    padding: 20px;
+    margin: 20px;
+    background: #fff;
+    color: #fb9678;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .content {
+    background: #fff;
+    padding: 25px;
+    margin: 0 20px;
+    text-align: justify;
+  }
+}
