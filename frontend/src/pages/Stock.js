@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
-export function Products() {
+export function Stock() {
 
   const [formValues, setFormValues] = useState({});
 
@@ -51,7 +51,7 @@ export function Products() {
   return (
     <>
       <div className="nav-main">
-        Produtos
+        Movimentação de Estoque
       </div>
 
       <div className="content">
@@ -61,19 +61,22 @@ export function Products() {
             <form onSubmit={handleSubmit} autoComplete="off">
               <div className="row">
                 <div className="col-lg-12">
-                  <label className="mb-2"><b>Selecione o tipo de produto:</b></label>
+                  <label className="mb-2"><b>Selecione o tipo de movimentação:</b></label>
                   <select name="tipo" className="form-control" required onChange={handleInputChange} value={formValues.tipo || ''}>
-                    <option value="eletronico">Eletrônico</option>
-                    <option value="eletrodomestico">Eletrodoméstico</option>
-                    <option value="movel">Móvel</option>
+                    <option value="entrada">Entrada</option>
+                    <option value="saida">Saída</option>
                   </select>
                 </div>
               </div>
 
               <div className="row">
                 <div className="col-lg-12 mt-4">
-                  <label className="mb-2"><b>Descrição do produto:</b></label>
-                  <input type="text" name="descricao" className="form-control" required onChange={handleInputChange} value={formValues.descricao || ''} />
+                  <label className="mb-2"><b>Selecione o produto:</b></label>
+                  <select name="tipo" className="form-control" required onChange={handleInputChange} value={formValues.tipo || ''}>
+                    <option value="eletronico">Eletrônico</option>
+                    <option value="eletrodomestico">Eletrodoméstico</option>
+                    <option value="movel">Móvel</option>
+                  </select>
                 </div>
               </div>
 

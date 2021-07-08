@@ -1,6 +1,6 @@
 import '../styles/layout.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faHome, faLaptop } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faHome, faLaptop, faBox } from '@fortawesome/free-solid-svg-icons';
 
 import { Link } from 'react-router-dom';
 
@@ -28,6 +28,12 @@ export function Layout({ children }) {
             <li className="menu-item">
               <Link to="produtos">
                 <FontAwesomeIcon icon={faLaptop} /> Produtos
+              </Link>
+            </li>
+
+            <li className="menu-item">
+              <Link to="estoque">
+                <FontAwesomeIcon icon={faBox} /> Estoque
               </Link>
             </li>
           </ul>
