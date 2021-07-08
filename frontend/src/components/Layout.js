@@ -4,7 +4,6 @@ import { faBars, faHome, faLaptop } from '@fortawesome/free-solid-svg-icons';
 
 import { Link } from 'react-router-dom';
 
-import LogoImg from '../images/logo-text.png';
 import ProfileImg from '../images/profile.jpg';
 
 export function Layout({ children }) {
@@ -13,10 +12,6 @@ export function Layout({ children }) {
       <input type="checkbox" id="toggle-menu" />
 
       <aside>
-        <div className="logo">
-          <img src={LogoImg} alt="Logo" />
-        </div>
-
         <div className="profile">
           <img src={ProfileImg} alt="Imagem do Perfil" />
           <Link to="/">Kélison Rosendo</Link>

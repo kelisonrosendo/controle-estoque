@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../services/api';
 
 export function Products() {
 
@@ -9,15 +10,43 @@ export function Products() {
     setFormValues({ ...formValues, [name]: value });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { codigo } = formValues;
+
     const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
+    const { tipo, descricao, valor, quantidade } = Object.fromEntries(formData);
 
-    // setFormValues ({});
+    if (!codigo) {
+      await api.post('produtos/insert', { tipo, descricao, valor, quantidade });
+    } else {
+      await api.put(`produtos/update/${codigo}`, { tipo, descricao, valor, quantidade });
+      setEdit(false);
+    }
 
-    console.log(data);
+    setFormValues({});
+    handleProducts();
   }
+
+  const [products, setProducts] = useState([]);
+
+  const handleProducts = async () => {
+    await api.get('produtos').then(response => {
+      setProducts(response.data);
+    });
+  }
+
+  const [edit, setEdit] = useState(false);
+
+  const handleEditProduct = (product) => {
+    setEdit(true);
+    setFormValues(product);
+  }
+
+  useEffect(() => {
+    handleProducts()
+  }, [])
 
   return (
     <>
@@ -29,11 +58,11 @@ export function Products() {
 
         <div className="row">
           <div className="col-lg-12">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
               <div className="row">
                 <div className="col-lg-12">
                   <label className="mb-2">Selecione o tipo de produto:</label>
-                  <select name="tipo" className="form-control" onChange={handleInputChange} value={formValues.tipo || ''}>
+                  <select name="tipo" className="form-control" required onChange={handleInputChange} value={formValues.tipo || ''}>
                     <option value="eletronico">Eletrônico</option>
                     <option value="eletrodomestico">Eletrodoméstico</option>
                     <option value="movel">Móvel</option>
@@ -44,25 +73,29 @@ export function Products() {
               <div className="row">
                 <div className="col-lg-12 mt-4">
                   <label className="mb-2">Descrição do produto:</label>
-                  <input type="text" name="descricao" className="form-control" onChange={handleInputChange} value={formValues.descricao || ''} />
+                  <input type="text" name="descricao" className="form-control" required onChange={handleInputChange} value={formValues.descricao || ''} />
                 </div>
               </div>
 
               <div className="row">
                 <div className="col-lg-6 mt-4">
                   <label className="mb-2">Valor:</label>
-                  <input type="text" name="valor" className="form-control" onChange={handleInputChange} value={formValues.valor || ''} />
+                  <input type="text" name="valor" className="form-control" required onChange={handleInputChange} value={formValues.valor || ''} />
                 </div>
 
                 <div className="col-lg-6 mt-4">
                   <label className="mb-2">Quantidade:</label>
-                  <input type="number" name="quantidade" className="form-control" onChange={handleInputChange} value={formValues.quantidade || ''} />
+                  <input type="number" name="quantidade" className="form-control" required onChange={handleInputChange} value={formValues.quantidade || ''} />
                 </div>
               </div>
 
               <div className="row text-center">
                 <div className="col-lg-12">
-                  <button type="submit" className="btn btn-danger mt-4 mb-2">Cadastrar Produto</button>
+                  {edit ? (
+                    <button type="submit" className="btn btn-info mt-4 mb-2">Editar Produto</button>
+                  ) : (
+                    <button type="submit" className="btn btn-success mt-4 mb-2">Cadastrar Produto</button>
+                  )}
                 </div>
               </div>
             </form>
@@ -72,7 +105,7 @@ export function Products() {
         <hr />
 
         <div className="row">
-          <div className="col-lg-12">
+          <div className="col-lg-12 table-responsive">
 
             <table className="table">
               <thead>
@@ -86,16 +119,26 @@ export function Products() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="align-middle">1</td>
-                  <td className="align-middle">Mesa Gamer</td>
-                  <td className="align-middle">Móvel</td>
-                  <td className="align-middle">150,00</td>
-                  <td className="align-middle">10</td>
-                  <td className="align-middle text-center">
-                    <button className="btn btn-warning" onClick={handleInputChange}>Editar</button>
-                  </td>
-                </tr>
+                {!products.length ? (
+                  <tr>
+                    <td colSpan="6">Nenhum produto cadastrado.</td>
+                  </tr>
+                ) : (
+                  products.map(product => {
+                    return (
+                      <tr key={product.codigo}>
+                        <td className="align-middle">{product.codigo}</td>
+                        <td className="align-middle">{product.descricao}</td>
+                        <td className="align-middle">{product.tipo}</td>
+                        <td className="align-middle">{product.valor}</td>
+                        <td className="align-middle">{product.quantidade}</td>
+                        <td className="align-middle text-center">
+                          <button className="btn btn-sm btn-warning" onClick={() => handleEditProduct(product)}>Editar</button>
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
               </tbody>
             </table>
 
