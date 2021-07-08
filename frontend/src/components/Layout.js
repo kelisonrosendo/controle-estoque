@@ -39,10 +39,10 @@ export function Layout({ children }) {
         </div>
       </aside>
 
-      <div class="container-main">
+      <div className="container-main">
         <header>
-          <div class="header-left">
-            <label for="toggle-menu">
+          <div className="header-left">
+            <label htmlFor="toggle-menu">
               <FontAwesomeIcon icon={faBars} />
             </label>
           </div>
