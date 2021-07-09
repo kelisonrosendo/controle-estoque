@@ -60,18 +60,18 @@ export function Stock() {
 
   const [edit, setEdit] = useState(false);
 
-  const handleEditStock = (stock) => {
-    const newData = {
-      codigo: stock.codigo,
-      tipo: stock.tipo,
-      produto: stock.codigo_produto,
-      valor: stock.valor,
-      quantidade: stock.quantidade
-    };
+  // const handleEditStock = (stock) => {
+  //   const newData = {
+  //     codigo: stock.codigo,
+  //     tipo: stock.tipo,
+  //     produto: stock.codigo_produto,
+  //     valor: stock.valor,
+  //     quantidade: stock.quantidade
+  //   };
 
-    setEdit(true);
-    setFormValues(newData);
-  }
+  //   setEdit(true);
+  //   setFormValues(newData);
+  // }
 
   const [listStock, setListStock] = useState([]);
 
@@ -156,14 +156,14 @@ export function Stock() {
                   <th>Produto</th>
                   <th>Tipo Produto</th>
                   <th>Valor</th>
-                  <th>Qtde</th>
-                  <th className="text-center">Ação</th>
+                  <th className="text-center">Qtde</th>
+                  {/* <th className="text-center">Ação</th> */}
                 </tr>
               </thead>
               <tbody>
                 {!listStock.length ? (
                   <tr>
-                    <td colSpan="6">Nenhuma movimentação realizada.</td>
+                    <td colSpan="7">Nenhuma movimentação realizada.</td>
                   </tr>
                 ) : (
                   listStock.map(stock => {
@@ -174,10 +174,10 @@ export function Stock() {
                         <td className="align-middle">{stock.descricao_produto}</td>
                         <td className="align-middle">{stock.tipo_produto}</td>
                         <td className="align-middle">R${stock.valor}</td>
-                        <td className="align-middle">{stock.quantidade}</td>
-                        <td className="align-middle text-center">
+                        <td className="text-center align-middle">{stock.quantidade}</td>
+                        {/* <td className="align-middle text-center">
                           <button className="btn btn-sm btn-warning" onClick={() => handleEditStock(stock)}>Editar</button>
-                        </td>
+                        </td> */}
                       </tr>
                     )
                   })
