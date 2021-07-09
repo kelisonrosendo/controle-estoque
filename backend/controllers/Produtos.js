@@ -59,10 +59,25 @@ module.exports = {
         const id = req.params.id;
 
         try {
-            const response = await db.query(`delete from produtos where codigo = ${id}`);
+            const response = await db.query(`delete from produtos where codigo = ${id} and codigo not in (select codigo_produto from estoque where codigo_produto = ${id})`);
             res.json(response);
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+
+    async updateQuantity(req, res) {
+        const id = req.params.id;
+
+        const data = {
+            "quantidade": req.body.qtdProduto
+        }
+
+        try {
+            const response = await db.query('update produtos set ? where codigo = ?', [data, id]);
+            res.json(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }    
 }

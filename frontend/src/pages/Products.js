@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
+import { toast } from 'react-toastify';
+
 export function Products() {
 
   const [formValues, setFormValues] = useState({});
@@ -44,14 +46,25 @@ export function Products() {
     setFormValues(product);
   }
 
+  const handleDeleteProduct = async (product) => {
+    const { codigo } = product;
+    const response = await api.delete(`produtos/delete/${codigo}`);
+
+    if (response.data[0].affectedRows === 0) {
+      return toast.error("Produto não pode ser excluído, pois possui vínculo na tela de movimentações de estoque!");
+    }
+
+    handleProducts();
+  }
+
   useEffect(() => {
-    handleProducts()
+    handleProducts();
   }, [])
 
   return (
     <>
       <div className="nav-main">
-        Produtos
+        Cadastro de Produtos
       </div>
 
       <div className="content">
@@ -63,6 +76,7 @@ export function Products() {
                 <div className="col-lg-12">
                   <label className="mb-2"><b>Selecione o tipo de produto:</b></label>
                   <select name="tipo" className="form-control" required onChange={handleInputChange} value={formValues.tipo || ''}>
+                    <option value="">Selecione uma opção</option>
                     <option value="eletronico">Eletrônico</option>
                     <option value="eletrodomestico">Eletrodoméstico</option>
                     <option value="movel">Móvel</option>
@@ -78,14 +92,14 @@ export function Products() {
               </div>
 
               <div className="row">
-                <div className="col-lg-6 mt-4">
+                <div className="col-sm-6 mt-4">
                   <label className="mb-2"><b>Valor:</b></label>
-                  <input type="text" name="valor" className="form-control" required onChange={handleInputChange} value={formValues.valor || ''} />
+                  <input type="number" name="valor" className="form-control" required onChange={handleInputChange} value={formValues.valor || ''} />
                 </div>
 
-                <div className="col-lg-6 mt-4">
+                <div className="col-sm-6 mt-4">
                   <label className="mb-2"><b>Quantidade:</b></label>
-                  <input type="number" name="quantidade" className="form-control" required onChange={handleInputChange} value={formValues.quantidade || ''} />
+                  <input type="number" name="quantidade" min="1" className="form-control" required onChange={handleInputChange} value={formValues.quantidade || ''} />
                 </div>
               </div>
 
@@ -107,7 +121,7 @@ export function Products() {
         <div className="row">
           <div className="col-lg-12 table-responsive">
 
-            <table className="table">
+            <table className="table table-striped">
               <thead>
                 <tr>
                   <th>Código</th>
@@ -115,7 +129,7 @@ export function Products() {
                   <th>Tipo</th>
                   <th>Valor</th>
                   <th>Qtde</th>
-                  <th className="text-center">Ação</th>
+                  <th width="5%" className="text-center" colSpan="2">Ação</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,10 +144,13 @@ export function Products() {
                         <td className="align-middle">{product.codigo}</td>
                         <td className="align-middle">{product.descricao}</td>
                         <td className="align-middle">{product.tipo}</td>
-                        <td className="align-middle">{product.valor}</td>
+                        <td className="align-middle">R${product.valor}</td>
                         <td className="align-middle">{product.quantidade}</td>
                         <td className="align-middle text-center">
                           <button className="btn btn-sm btn-warning" onClick={() => handleEditProduct(product)}>Editar</button>
+                        </td>
+                        <td className="align-middle text-center">
+                          <button className="btn btn-sm btn-danger" onClick={() => handleDeleteProduct(product)}>Excluir</button>
                         </td>
                       </tr>
                     )
